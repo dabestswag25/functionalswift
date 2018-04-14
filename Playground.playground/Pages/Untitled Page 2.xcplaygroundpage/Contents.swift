@@ -14,7 +14,7 @@ extension Position {
     var length : Double {
         return sqrt(pow(x, 2) + pow(y, 2))
     }
-    func minus(point : Position) -> Position {
+    func minus(_ point : Position) -> Position {
         return Position(x: x - point.x, y: y - point.y)
     }
 }
@@ -28,9 +28,29 @@ func circle (radius:Distance) -> Region {
 }
 
 func circle2 (radius:Distance, center:Position) -> Region {
-    return { point in point.minus(point: center).length <= radius }
+    return { point in point.minus(center).length <= radius }
 }
 
+func shift (_ region: @escaping Region, by offset: Position) -> Region {
+    return { point in region(point.minus(offset)) }
+}
 
+let shifted = shift(circle(radius: 10), by: Position(x: 5, y: 5))
+
+func invert (_ region: @escaping Region) -> Region {
+    return { point in !region(point) }
+}
+
+func intersect (_ region: @escaping Region, with other: @escaping Region) -> Region {
+    return { point in region(point) && other(point) }
+}
+
+func union (_ region: @escaping Region, with other: @escaping Region) -> Region {
+    return { point in region(point) || other(point) }
+}
+
+func subtract (_ region: @escaping Region, from original: @escaping Region) -> Region {
+    return { point in !region(point) && original(point) }
+}
 
 //: [Next](@next)
