@@ -10,6 +10,12 @@ struct Position {
     var y : Double
 }
 
+struct Ship {
+    var position    : Position
+    var firingRange : Distance
+    var unsafeRange : Distance
+}
+
 extension Position {
     var length : Double {
         return sqrt(pow(x, 2) + pow(y, 2))
@@ -51,6 +57,16 @@ func union (_ region: @escaping Region, with other: @escaping Region) -> Region 
 
 func subtract (_ region: @escaping Region, from original: @escaping Region) -> Region {
     return { point in !region(point) && original(point) }
+}
+
+extension Ship {
+    func canSafelyEngageShip(target: Ship, friendly: Ship) -> Bool {
+        let rangeRegion = subtract(circle(radius: unsafeRange), from: circle(radius: firingRange))
+        let firingRegion = shift(rangeRegion, by: position)
+        let friendlyRegion = shift(circle(radius: unsafeRange), by: friendly.position)
+        let resultRegion = subtract(friendlyRegion, from: firingRegion)
+        return resultRegion(target.position)
+    }
 }
 
 //: [Next](@next)
