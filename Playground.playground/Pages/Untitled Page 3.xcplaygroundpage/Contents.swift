@@ -10,20 +10,16 @@ func map<A, B>(_ array: [A], transform: (A) -> B) -> [B] {
     return result
 }
 
-func reduce<A, B>(_ array: [A], transform: (B, A) -> B) -> B {
-    var result: B
+func reduce<A, B>(_ array: [A], initial: B, transform: (B, A) -> B) -> B {
+    var accumulator: B = initial
     for x in array {
-    
+        accumulator = transform(accumulator, x)
     }
-    return result
+    return accumulator
 }
 
 func sum(array: [Int]) -> Int {
-    var result: Int = 0
-    for x in array {
-        result += x
-    }
-    return result
+    return reduce(array, initial: 0, transform: { (x, y) in x + y })
 }
 
 func product(array: [Int]) -> Int {
@@ -32,6 +28,23 @@ func product(array: [Int]) -> Int {
         result *= x
     }
     return result
+}
+
+//func factorial(num: Int) -> Int {
+//    var nums: [Int] = []
+//    for num in nums {
+//        nums.append(num )
+//    }
+//    return reduce(nums, initial: num, transform: { (x, y) in x * y })
+//}
+
+func factorial(_ n: Int) -> Int {
+    if n > 0 {
+        return n * factorial(n - 1)
+    }
+    else {
+        return 1
+    }
 }
 
 func concat(array: [String]) -> String {
@@ -82,6 +95,7 @@ sum(array: array3)
 product(array: array4)
 concat(array: array5)
 list(array: array5)
+factorial(4)
 
 let y = map(array2, transform: { x in x && false })
 y
