@@ -30,6 +30,10 @@ func product(array: [Int]) -> Int {
     return result
 }
 
+func flatten(array: [[Int]]) -> [Int] {
+    return reduce(array, initial: [], transform: { (x, y) in x + y })
+}
+
 //func factorial(num: Int) -> Int {
 //    var nums: [Int] = []
 //    for num in nums {
@@ -88,6 +92,7 @@ let array2 = [true, false, true]
 let array3 = [8, 6, 7, 5, 3, 0, 9]
 let array4 = [1, 2, 3, 4]
 let array5 = ["hello", "world"]
+let array6 = [[0, 1], [2, 3, 4], [5, 6, 7, 8], [9]]
 
 increment(array: array)
 double(array: array)
@@ -96,6 +101,7 @@ product(array: array4)
 concat(array: array5)
 list(array: array5)
 factorial(4)
+flatten(array: array6)
 
 let y = map(array2, transform: { x in x && false })
 y
